@@ -1,11 +1,45 @@
+/*jshint esversion: 6 */
 
-var setup = function(){
-	createCanvas(windowWidth, windowHeight);
+class Bee {
+  constructor(paramNumber, paramInfluence) {
+    this.number = paramNumber;
+    this.influence = paramInfluence;
+
+		this.beeArray = [];
+  }
+
+  count() {
+    this.number += this.number + 1;
+  }
+
+  draw() {
+
+		fill(0)
+		ellipse(30,30,30, 60);
+
+  }
+}
+
+class Pesticide {
+  constructor(paramNumber, paramInfluence) {
+    this.number = paramNumber;
+    this.influence = paramInfluence;
+  }
+}
+
+class Feld {
+  constructor(parm) {
+
+  }
+}
+
+var setup = function() {
+  createCanvas(windowWidth, windowHeight);
 
 };
 
 function draw() {
-
-  fill(255);
-  ellipse(50,50, 50,50);
+	background(255);
+	var biene = new Bee(12, 1);
+	biene.draw();
 }
