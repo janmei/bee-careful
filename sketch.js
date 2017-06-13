@@ -1,45 +1,52 @@
 /*jshint esversion: 6 */
-
-class Bee {
-  constructor(paramNumber, paramInfluence) {
-    this.number = paramNumber;
-    this.influence = paramInfluence;
-
-		this.beeArray = [];
-  }
-
-  count() {
-    this.number += this.number + 1;
-  }
-
-  draw() {
-
-		fill(0)
-		ellipse(30,30,30, 60);
-
-  }
-}
-
-class Pesticide {
-  constructor(paramNumber, paramInfluence) {
-    this.number = paramNumber;
-    this.influence = paramInfluence;
-  }
-}
-
-class Feld {
-  constructor(parm) {
-
-  }
-}
-
+var biene;
+var fridge;
+var val;
+var tolerance;
+var slider;
+var array = [];
 var setup = function() {
   createCanvas(windowWidth, windowHeight);
+  biene = new Bee();
+  fridge = new Fridge();
 
+  slider = createSlider(0, 255, 0);
+  slider.position(200, 600);
+  slider.style('width', '150px');
 };
 
+function beeControl() {
+  if (val > array.length) {
+    for (var j = array.length; j < val; j++) {
+      array.push(new Bee());
+      console.log("push");
+      fridge.tolerance += 10;
+    }
+  } else {
+    for (var k = array.length; k > val; k--) {
+      array.shift();
+      console.log("shift");
+      fridge.tolerance -= 10;
+    }
+  }
+}
+//
+// function mouseDragged(){
+//   biene.slider(mouseY);
+//   return false;
+// }
+
 function draw() {
-	background(255);
-	var biene = new Bee(12, 1);
-	biene.draw();
+  val = slider.value();
+
+  slider.changed(beeControl);
+
+  background(255);
+  fridge.draw();
+  for (var bee of array) {
+    bee.draw();
+  }
+
+  text(val, 250, 580);
+
 }
