@@ -17,14 +17,16 @@ class Bee {
   }
 
   draw() {
-    fill(0);
-    ellipse(this.x, this.y, 60, 60);
+    push();
+    scale(-1.0, 1.0);
+    image(beeAlive, this.x - beeAlive.width, this.y, 50, 50);
+    pop();
   }
 
-  slider(y){
-    if (y <= 50){
+  slider(y) {
+    if (y <= 50) {
       y = 50;
-    }else if (y >= 900) {
+    } else if (y >= 900) {
       y = 900;
     }
 

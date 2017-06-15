@@ -1,6 +1,8 @@
 /*jshint esversion: 6 */
 var biene;
 var fridge;
+var beeAlive;
+var fridgeOpen;
 var val;
 var val2;
 var tolerance;
@@ -8,7 +10,11 @@ var slider;
 var beeArray = [];
 var pestArray = [];
 var bg;
-
+function preload() {
+  bg = loadImage("./assets/Feld.png");
+  beeAlive = loadImage("./assets/Biene_lebend.png");
+  fridgeOpen = loadImage("./assets/Kühlschrank_offen.png");
+}
 // einmaliger Aufruf
 var setup = function() {
   createCanvas(windowWidth, windowHeight);
@@ -31,29 +37,25 @@ var setup = function() {
 
   // Einmaliges Aufrufen um die Slider und werte zu initialisieren
   beeControl();
-
-  // Hintergrundbild
-  bg = loadImage("./assets/Feld.png");
 };
 
 // prüft ob die slider werte größer oder kleiner sind und passt das beeArray an diesen Wert an
 function beeControl() {
-
   // falls slider wert größer ist, werden soviele Objekte in das Array gepusht bis die selbe Länge wie der sliderwert erreicht wird.
-  if (val > beeArray.length) {
-    for (var j = beeArray.length; j < val; j++) {
-      beeArray.push(new Bee());
+  if (val > beeArray.length) { // falls der sliderwert größer ist als die Länge des Arrays
+    for (var j = beeArray.length; j < val; j++) { // zähle bis zum Wert vom Slider
+      beeArray.push(new Bee()); // Pushe jedes mal ein neues Objekt in das Array
       fridge.tolerance += 10; // tolerance wird erhöht um die Produkte auszugrauen
     }
-  } else {
-    for (var k = beeArray.length; k > val; k--) {
-      beeArray.shift();
-      fridge.tolerance -= 10;
+  } else { // wenn der sliderwert kleiner ist
+    for (var k = beeArray.length; k > val; k--) { // zähle auf den sliderwert herunter
+      beeArray.shift(); // entferne jedes mal das erste Element aus dem Array
+      fridge.tolerance -= 10; // verringere die tolerance um 10.
     }
   }
-
 }
 
+// selbe Funktion wie bei den Bienen nur auf pestArray bezogen und den Slider für Pestizide
 function pestControl() {
   if (val2 > pestArray.length) {
     for (var j = pestArray.length; j < val2; j++) {
@@ -75,12 +77,16 @@ function pestControl() {
 
       // erhöht den wert vom Bienen slider wenn Pestizid Slider verringert wird.
       slider.value(beeArray.length);
-
     }
   }
 }
 
+// tint(255, 70);
+//filter(GRAY);
+//
+
 function draw() {
+  background(255);
   image(bg, 0, 0, width);
 
   // variablen für die Werte der jeweiligen Slider
@@ -101,7 +107,5 @@ function draw() {
     pest.draw();
   }
 
-  
   text(val, 250, 580);
-
 }
