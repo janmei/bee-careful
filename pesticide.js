@@ -17,6 +17,7 @@ class Pesticide {
   }
 
   draw() {
+    noStroke();
     fill('rgba(139, 195, 74, 0.4)');
     ellipse(this.x, this.y, 60, 60);
     fill(0);

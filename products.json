@@ -1,0 +1,8 @@
+{
+  "product": [{
+      "name": "Apple",
+      "path": "./food/apple.png",
+      "tolerance": 50
+    }
+  ]
+}

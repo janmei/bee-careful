@@ -10,10 +10,13 @@ var slider;
 var beeArray = [];
 var pestArray = [];
 var bg;
+var product;
+var productJSON;
 function preload() {
   bg = loadImage("./assets/Feld.png");
   beeAlive = loadImage("./assets/Biene_lebend.png");
   fridgeOpen = loadImage("./assets/Kühlschrank_offen.png");
+  productJSON = loadJSON("products.json");
 }
 // einmaliger Aufruf
 var setup = function() {
@@ -23,6 +26,8 @@ var setup = function() {
   biene = new Bee();
   fridge = new Fridge();
   pest = new Pesticide();
+  apple = new Product("apple", 50);
+  fridge.add(apple);
 
   // slider für Bienen
   slider = createSlider(0, 10, 5);
@@ -82,8 +87,7 @@ function pestControl() {
 }
 
 // tint(255, 70);
-//filter(GRAY);
-//
+// filter(GRAY);
 
 function draw() {
   background(255);
@@ -105,6 +109,9 @@ function draw() {
   }
   for (var pest of pestArray) {
     pest.draw();
+  }
+  for (var produ of fridge.products){
+    produ.show(width/2, height/2);
   }
 
   text(val, 250, 580);

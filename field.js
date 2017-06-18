@@ -14,10 +14,10 @@ class Fridge {
 
   add(product){
     this.products.push(product);
+    
   }
 
   draw(){
-
     image(fridgeOpen, width/2-120, height/2-140, 500, 480);
     textAlign(CENTER);
     fill(0);

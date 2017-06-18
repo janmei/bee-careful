@@ -10,17 +10,33 @@ class Bee {
     this.y = random(30, 400);
 
     this.range = 850;
+    this.id = Math.round(random(0, 1));
+
   }
 
   count() {
     this.number += this.number + 1;
   }
 
+  move() {
+    var x = random(-2, 2);
+    var y = random(-2, 2);
+    var easing = 0.3;
+    this.x = this.x + x * easing;
+    this.y = this.y + y * easing;
+  }
+
   draw() {
     push();
-    scale(-1.0, 1.0);
-    image(beeAlive, this.x - beeAlive.width, this.y, 50, 50);
+      if (this.id === 1) {
+        scale(-1.0, 1.0);
+        image(beeAlive, this.x - beeAlive.width, this.y, 50, 50);
+      } else {
+        scale(1.0, 1.0);
+        image(beeAlive, this.x, this.y, 50, 50);
+      }
     pop();
+    this.move();
   }
 
   slider(y) {
@@ -34,6 +50,9 @@ class Bee {
     ellipse(700, y, 60, 60);
 
     return y;
+  }
 
+  hide(){
+    tint(255, 70);
   }
 }
