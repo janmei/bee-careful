@@ -6,7 +6,7 @@ class Pesticide {
     this.tolerance = 100;
     this.beeArray = [];
 
-    this.x = random(900, 1200);
+    this.x = random(width-400, width-30);
     this.y = random(130, 430);
 
     this.range = 850;

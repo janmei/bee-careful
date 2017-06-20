@@ -12,6 +12,7 @@ var pestArray = [];
 var bg;
 var product;
 var productJSON;
+var banana;
 
 function preload() {
   bg = loadImage("./assets/Feld.png");
@@ -27,19 +28,33 @@ var setup = function() {
   biene = new Bee();
   fridge = new Fridge();
   pest = new Pesticide();
-  apple = new Product("apple", 50);
+  apple = new Product("apple", 50, width / 2 - 80, height / 2 + 50);
+  kiwi = new Product("kiwi", 30, width / 2, height / 2 + 50);
+  milk = new Product("milk", 0, width / 2 - 80, height / 2 + 150);
+  honey = new Product("honey", 60, width / 2 -40, height / 2 +150);
+  grapes = new Product("grapes", 60, width / 2 +20, height / 2 +150);
+
   fridge.add(apple);
+  fridge.add(kiwi);
+  fridge.add(milk);
+  fridge.add(honey);
+  fridge.add(grapes);
+
 
   // slider für Bienen
   slider = createSlider(0, 10, 3);
   slider.position(200, 600);
   slider.style('width', '150px');
+  slider.id("slider");
   val = slider.value();
 
   // Slider für Pesticide
   slider2 = createSlider(0, 10, 0);
-  slider2.position(width-300, 600);
+  slider2.position(width - 300, 600);
   slider2.style('width', '150px');
+  slider2.id("slider2");
+  val2 = slider2.value();
+
 
   // Einmaliges Aufrufen um die Slider und werte zu initialisieren
   beeControl();
@@ -69,8 +84,10 @@ function pestControl() {
   if (val2 > pestArray.length) {
     for (var j = pestArray.length; j < val2; j++) {
       pestArray.push(new Pesticide());
-      fridge.tolerance -= 10;
-      beeArray.shift();
+      fridge.tolerance -= 5;
+      if (val > 3) {
+        beeArray.shift();
+      }
 
       // verringert den wert vom Bienen slider wenn Pestizid Slider erhöht wird.
       slider.value(beeArray.length);
@@ -79,16 +96,23 @@ function pestControl() {
   } else {
     for (var k = pestArray.length; k > val2; k--) {
       pestArray.shift();
-      fridge.tolerance += 10;
-      beeArray.push(new Bee());
+      fridge.tolerance += 5;
 
-      // erhöht den wert vom Bienen slider wenn Pestizid Slider verringert wird.
-      slider.value(beeArray.length);
+      if (val2 < 5) {
+        beeArray.push(new Bee());
+      }
+
+        // erhöht den wert vom Bienen slider wenn Pestizid Slider verringert wird.
+        slider.value(beeArray.length);
 
     }
+
+    // if (val2 > 3 && val != 3){
+    //   slider.value(3);
+    // }
   }
 
-  if (fridge.tolerance<= 0){
+  if (fridge.tolerance <= 0) {
     fridge.tolerance = 0;
   }
 }
@@ -97,13 +121,15 @@ function draw() {
   background(255);
   image(bg, 0, 0, width);
 
-  // variablen für die Werte der jeweiligen Slider
   val = slider.value();
   val2 = slider2.value();
+  pestControl();
+  beeControl();
 
   // wenn die Slider geändert werden sollen die Control Funktionen als Callback ausgeführt werden.
-  slider.changed(beeControl);
-  slider2.changed(pestControl);
+  // slider.changed(beeControl);
+  // slider2.changed(pestControl);
+
   fridge.draw();
 
   // male soviel Pestizide/Biene wie Elemente in den Arrays vorhanden sind.
@@ -115,12 +141,11 @@ function draw() {
   }
   text(val, 250, 580);
 
-  for(var prod of fridge.products){
-    if (prod.on){
-      prod.show(0,0);
-    }
-    else {
-      prod.hide(0,0);
+  for (var prod of fridge.products) {
+    if (prod.on) {
+      prod.show();
+    } else {
+      prod.hide();
     }
   }
 }

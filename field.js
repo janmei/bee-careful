@@ -19,7 +19,7 @@ class Fridge {
   tolControl(){
     var tol = this.tolerance;
     this.products.forEach(function (item, index) {
-      if (tol >= item.tolerance){
+      if (tol < item.tolerance){
         item.on = false;
     }else {
       item.on = true;
