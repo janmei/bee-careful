@@ -8,7 +8,7 @@ class Product {
     this.img = loadImage(this.path);
     this.x = x;
     this.y = y;
-    this.scale = 3.5;
+    this.scale = 2;
 
   }
 

@@ -22,8 +22,8 @@ class Bee {
     var x = random(-2, 2);
     var y = random(-2, 2);
     var easing = 0.2;
-    this.x = this.x + x * easing;
-    this.y = this.y + y * easing;
+    this.x += x * easing;
+    this.y += y * easing;
   }
 
   draw() {

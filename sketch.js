@@ -28,17 +28,21 @@ var setup = function() {
   biene = new Bee();
   fridge = new Fridge();
   pest = new Pesticide();
-  apple = new Product("apple", 50, width / 2 - 80, height / 2 + 50);
-  kiwi = new Product("kiwi", 30, width / 2, height / 2 + 50);
-  milk = new Product("milk", 0, width / 2 - 80, height / 2 + 150);
-  honey = new Product("honey", 60, width / 2 -40, height / 2 +150);
-  grapes = new Product("grapes", 60, width / 2 +20, height / 2 +150);
+  apple = new Product("apple", 50, width / 2 + 200, height / 2 + 70);
+  kiwi = new Product("kiwi", 30, width / 2, height / 2 + 70);
+  milk = new Product("milk", 0, width / 2 - 80, height / 2 + 155);
+  honey = new Product("honey", 60, width / 2 - 40, height / 2 + 155);
+  grapes = new Product("grapes", 60, width / 2 + 20, height / 2 + 170);
+  cheese = new Product("cheese", 0, width / 2 + 30, height / 2 + 230);
+  tomatoes = new Product("tomato-box", 40, width / 2 + -30, height / 2 + 220);
 
   fridge.add(apple);
   fridge.add(kiwi);
   fridge.add(milk);
   fridge.add(honey);
   fridge.add(grapes);
+  fridge.add(cheese);
+  fridge.add(tomatoes);
 
 
   // slider für Bienen
@@ -102,8 +106,8 @@ function pestControl() {
         beeArray.push(new Bee());
       }
 
-        // erhöht den wert vom Bienen slider wenn Pestizid Slider verringert wird.
-        slider.value(beeArray.length);
+      // erhöht den wert vom Bienen slider wenn Pestizid Slider verringert wird.
+      slider.value(beeArray.length);
 
     }
 
