@@ -30,11 +30,16 @@ var setup = function() {
   pest = new Pesticide();
   apple = new Product("apple", 50, width / 2 + 200, height / 2 + 70);
   kiwi = new Product("kiwi", 30, width / 2, height / 2 + 70);
-  milk = new Product("milk", 0, width / 2 - 80, height / 2 + 155);
-  honey = new Product("honey", 60, width / 2 - 40, height / 2 + 155);
+  milk = new Product("milk", 0, width / 2 - 80, height / 2 + 150);
+  honey = new Product("honey", 60, width / 2 - 90, height / 2 + 100);
   grapes = new Product("grapes", 60, width / 2 + 20, height / 2 + 170);
   cheese = new Product("cheese", 0, width / 2 + 30, height / 2 + 230);
-  tomatoes = new Product("tomato-box", 40, width / 2 + -30, height / 2 + 220);
+  tomatoes = new Product("tomato-box", 40, width / 2 - 30, height / 2 + 105);
+  mush_box = new Product("mush_box", 0, width / 2 - 90, height / 2 + 220);
+  kakao = new Product("kakao", 10, width / 2 - 40, height / 2 + 160);
+  salad = new Product("salad", 0, width / 2 - 20, height / 2 + 225);
+  butter = new Product("butter", 0, width / 2 - 80, height / 2 + 65);
+  ice = new Product("Eis", 0, width / 2 + 60, height / 2 + 100);
 
   fridge.add(apple);
   fridge.add(kiwi);
@@ -43,6 +48,11 @@ var setup = function() {
   fridge.add(grapes);
   fridge.add(cheese);
   fridge.add(tomatoes);
+  fridge.add(mush_box);
+  fridge.add(kakao);
+  fridge.add(salad);
+  fridge.add(butter);
+  fridge.add(ice);
 
 
   // slider für Bienen
@@ -80,6 +90,10 @@ function beeControl() {
 
     }
   }
+
+  // if(val > 3){
+  //   slider.value(3);
+  // }
 }
 
 // selbe Funktion wie bei den Bienen nur auf pestArray bezogen und den Slider für Pestizide
@@ -88,8 +102,8 @@ function pestControl() {
   if (val2 > pestArray.length) {
     for (var j = pestArray.length; j < val2; j++) {
       pestArray.push(new Pesticide());
-      fridge.tolerance -= 5;
-      if (val > 3) {
+      fridge.tolerance -= 10;
+      if (val > 2) {
         beeArray.shift();
       }
 
@@ -100,7 +114,7 @@ function pestControl() {
   } else {
     for (var k = pestArray.length; k > val2; k--) {
       pestArray.shift();
-      fridge.tolerance += 5;
+      fridge.tolerance += 10;
 
       if (val2 < 5) {
         beeArray.push(new Bee());
@@ -110,10 +124,6 @@ function pestControl() {
       slider.value(beeArray.length);
 
     }
-
-    // if (val2 > 3 && val != 3){
-    //   slider.value(3);
-    // }
   }
 
   if (fridge.tolerance <= 0) {
