@@ -7,7 +7,7 @@ class Pesticide {
     this.beeArray = [];
 
     this.x = random(100, width - 100);
-    this.y = random(30, 100);
+    this.y = random(100, 300);
 
     this.range = 850;
     this.img = loadImage("./food/Pestizid_Dose.png");

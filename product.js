@@ -1,8 +1,8 @@
 /*jshint esversion:6 */
 class Product {
-  constructor(paramName, paramTolerance, x, y) {
+  constructor(paramName, paramPath, paramTolerance, x, y) {
     this.name = paramName;
-    this.path = "./food/" + this.name + ".png";
+    this.path = paramPath;
     this.tolerance = paramTolerance;
     this.on = true;
     this.img = loadImage(this.path);
@@ -15,12 +15,12 @@ class Product {
   hide() {
     tint(255, 70);
     // this.img.filter(GRAY);
-    image(this.img, this.x, this.y, this.img.width / this.scale, this.img.height / this.scale);
+    image(this.img, width / 2 + this.x, height / 2 + this.y, this.img.width / this.scale, this.img.height / this.scale);
 
     noTint();
   }
 
   show(x, y) {
-    image(this.img, this.x, this.y, this.img.width / this.scale, this.img.height / this.scale);
+    image(this.img, width / 2 + this.x, height / 2 + this.y, this.img.width / this.scale, this.img.height / this.scale);
   }
 }

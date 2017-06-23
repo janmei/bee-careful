@@ -14,47 +14,26 @@ var bg;
 var product;
 var productJSON;
 var banana;
+var data;
 
 function preload() {
   bg = loadImage("./assets/Feld.png");
   beeAlive = loadImage("./assets/Biene_lebend.png");
   fridgeOpen = loadImage("./assets/Kühlschrank_offen.png");
-  productJSON = loadJSON("products.json");
+  productJSON = loadJSON("./products.json");
 }
 // einmaliger Aufruf
 var setup = function() {
   createCanvas(windowWidth, windowHeight);
-
+  data = productJSON.product;
   // Objekte erstellen
   biene = new Bee();
   fridge = new Fridge();
   pesticide = new Pesticide();
-  apple = new Product("apple", 50, width / 2 + 200, height / 2 + 70);
-  kiwi = new Product("kiwi", 30, width / 2, height / 2 + 70);
-  milk = new Product("milk", 0, width / 2 - 80, height / 2 + 150);
-  honey = new Product("honey", 60, width / 2 - 90, height / 2 + 100);
-  grapes = new Product("grapes", 60, width / 2 + 20, height / 2 + 170);
-  cheese = new Product("cheese", 0, width / 2 + 30, height / 2 + 230);
-  tomatoes = new Product("tomato-box", 40, width / 2 - 30, height / 2 + 105);
-  mush_box = new Product("mush_box", 0, width / 2 - 90, height / 2 + 220);
-  kakao = new Product("kakao", 10, width / 2 - 40, height / 2 + 160);
-  salad = new Product("salad", 0, width / 2 - 20, height / 2 + 225);
-  butter = new Product("butter", 0, width / 2 - 80, height / 2 + 65);
-  ice = new Product("Eis", 0, width / 2 + 60, height / 2 + 100);
 
-  fridge.add(apple);
-  fridge.add(kiwi);
-  fridge.add(milk);
-  fridge.add(honey);
-  fridge.add(grapes);
-  fridge.add(cheese);
-  fridge.add(tomatoes);
-  fridge.add(mush_box);
-  fridge.add(kakao);
-  fridge.add(salad);
-  fridge.add(butter);
-  fridge.add(ice);
-
+  for (var l = 0; l < data.length; l++){
+    fridge.add(new Product(data[l].name, data[l].path, data[l].tolerance, data[l].x, data[l].y));
+  }
 
   // slider für Bienen
   slider = createSlider(0, 10, 3);
@@ -101,17 +80,15 @@ function beeControl() {
 // selbe Funktion wie bei den Bienen nur auf pestArray bezogen und den Slider für Pestizide
 function pestControl() {
   fridge.tolControl();
-  if (val2 > pestArray.length) {
+  if (val2 >= pestArray.length) {
     for (var j = pestArray.length; j < val2; j++) {
       pestArray.push(new Pesticide());
       fridge.tolerance -= 10;
       if (val > 2) {
         beeArray.shift();
       }
-
       // verringert den wert vom Bienen slider wenn Pestizid Slider erhöht wird.
       slider.value(beeArray.length);
-
     }
   } else {
     for (var k = pestArray.length; k > val2; k--) {
