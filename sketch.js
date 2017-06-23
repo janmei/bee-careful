@@ -141,8 +141,8 @@ function draw() {
   val2 = slider2.value();
 
   // wenn die Slider geändert werden sollen die Control Funktionen als Callback ausgeführt werden.
-  slider2.input(pestControl);
-  slider.input(beeControl);
+  pestControl();
+  beeControl();
   fridge.draw();
 
   pesticide.bottle();

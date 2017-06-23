@@ -4,8 +4,8 @@ class Bee {
   constructor() {
     this.beeArray = [];
 
-    this.x = random(300, windowWidth - 200);
-    this.y = random(200, 100);
+    this.x = random(200, width-200);
+    this.y = random(100, 300);
     this.id = Math.round(random(0, 1));
   }
 
@@ -19,13 +19,8 @@ class Bee {
 
   draw(){
     push();
-      if (this.id === 1) {
-        scale(-1.0, 1.0);
-        image(beeAlive, this.x - beeAlive.width, this.y, 50, 50);
-      } else {
         scale(1.0, 1.0);
         image(beeAlive, this.x, this.y, 50, 50);
-      }
     pop();
     this.move();
   }
