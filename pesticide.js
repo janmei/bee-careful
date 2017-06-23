@@ -12,6 +12,9 @@ class Pesticide {
     this.range = 850;
     this.img = loadImage("./food/Pestizid_Dose.png");
 
+    this.can = createSprite(width / 2, height / 2);
+    this.can.addImage(this.img);
+    this.can.mouseActive = true;
   }
 
   count() {
@@ -35,20 +38,11 @@ class Pesticide {
   }
 
   bottle() {
-    image(this.img, width -300, height-200, this.img.width / 2, this.img.height / 2);
-  }
-
-  slider(y) {
-    if (y <= 50) {
-      y = 50;
-    } else if (y >= 900) {
-      y = 900;
+    if (this.can.mouseIsOver && mouseIsPressed) {
+      console.log("yes");
+      this.can.position.x = mouseX;
+      this.can.position.y = mouseY;
     }
-
-    fill(139, 195, 74);
-    ellipse(700, y, 60, 60);
-
-    return y;
-
   }
+
 }

@@ -14,13 +14,16 @@ var bg;
 var product;
 var productJSON;
 var banana;
+var can;
 var data;
+var dose;
 
 function preload() {
   bg = loadImage("./assets/Feld.png");
   beeAlive = loadImage("./assets/Biene_lebend.png");
   fridgeOpen = loadImage("./assets/Kühlschrank_offen.png");
   productJSON = loadJSON("./products.json");
+  dose = loadImage("./food/Pestizid_Dose.png");
 }
 // einmaliger Aufruf
 var setup = function() {
@@ -52,8 +55,6 @@ var setup = function() {
 
   // Einmaliges Aufrufen um die Slider und werte zu initialisieren
   beeControl();
-
-
 };
 
 // prüft ob die slider werte größer oder kleiner sind und passt das beeArray an diesen Wert an
@@ -140,4 +141,7 @@ function draw() {
       prod.hide();
     }
   }
+
+  drawSprites();
+
 }
