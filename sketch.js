@@ -1,6 +1,7 @@
 /*jshint esversion: 6 */
 var biene;
 var fridge;
+var pesticide;
 var beeAlive;
 var fridgeOpen;
 var val;
@@ -27,7 +28,7 @@ var setup = function() {
   // Objekte erstellen
   biene = new Bee();
   fridge = new Fridge();
-  pest = new Pesticide();
+  pesticide = new Pesticide();
   apple = new Product("apple", 50, width / 2 + 200, height / 2 + 70);
   kiwi = new Product("kiwi", 30, width / 2, height / 2 + 70);
   milk = new Product("milk", 0, width / 2 - 80, height / 2 + 150);
@@ -72,6 +73,8 @@ var setup = function() {
 
   // Einmaliges Aufrufen um die Slider und werte zu initialisieren
   beeControl();
+
+
 };
 
 // prüft ob die slider werte größer oder kleiner sind und passt das beeArray an diesen Wert an
@@ -87,7 +90,6 @@ function beeControl() {
     for (var k = beeArray.length; k > val; k--) { // zähle auf den sliderwert herunter
       beeArray.shift(); // entferne jedes mal das erste Element aus dem Array
       fridge.tolerance -= 10; // verringere die tolerance um 10.
-
     }
   }
 
@@ -137,14 +139,13 @@ function draw() {
 
   val = slider.value();
   val2 = slider2.value();
-  pestControl();
-  beeControl();
 
   // wenn die Slider geändert werden sollen die Control Funktionen als Callback ausgeführt werden.
-  // slider.changed(beeControl);
-  // slider2.changed(pestControl);
-
+  pestControl();
+  beeControl();
   fridge.draw();
+
+  pesticide.bottle();
 
   // male soviel Pestizide/Biene wie Elemente in den Arrays vorhanden sind.
   for (var bee of beeArray) {
