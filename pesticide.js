@@ -6,14 +6,24 @@ class Pesticide {
     this.tolerance = 100;
     this.beeArray = [];
 
-    this.x = random(width-400, width-30);
-    this.y = random(130, 430);
+    this.x = random(100, width - 100);
+    this.y = random(30, 100);
 
     this.range = 850;
+    this.img = loadImage("./food/Pestizid_Dose.png");
+
   }
 
   count() {
-    this.number += this.number + 1;
+    this.number += 1;
+  }
+
+  move() {
+    var x = random(-5, 5);
+    var y = random(-5, 5);
+    var easing = 0.1;
+    this.x += x * easing;
+    this.y += y * easing;
   }
 
   draw() {
@@ -21,6 +31,11 @@ class Pesticide {
     fill('rgba(139, 195, 74, 0.4)');
     ellipse(this.x, this.y, 60, 60);
     fill(0);
+    this.move();
+  }
+
+  bottle() {
+    image(this.img, width -300, height-200, this.img.width / 2, this.img.height / 2);
   }
 
   slider(y) {

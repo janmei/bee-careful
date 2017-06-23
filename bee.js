@@ -2,20 +2,11 @@
 
 class Bee {
   constructor() {
-    this.number = 0;
-    this.tolerance = 100;
     this.beeArray = [];
 
-    this.x = random(30, 400);
-    this.y = random(30, 400);
-
-    this.range = 850;
+    this.x = random(300, windowWidth - 200);
+    this.y = random(200, 100);
     this.id = Math.round(random(0, 1));
-
-  }
-
-  count() {
-    this.number += this.number + 1;
   }
 
   move() {
@@ -26,7 +17,7 @@ class Bee {
     this.y += y * easing;
   }
 
-  draw() {
+  draw(){
     push();
       if (this.id === 1) {
         scale(-1.0, 1.0);
@@ -37,19 +28,6 @@ class Bee {
       }
     pop();
     this.move();
-  }
-
-  slider(y) {
-    if (y <= 50) {
-      y = 50;
-    } else if (y >= 900) {
-      y = 900;
-    }
-
-    fill(0);
-    ellipse(700, y, 60, 60);
-
-    return y;
   }
 
   hide(){
