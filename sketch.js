@@ -17,6 +17,10 @@ var banana;
 var can;
 var data;
 var dose;
+var hiveImg;
+var hive;
+var done = false;
+var mouse = false;
 
 function preload() {
   bg = loadImage("./assets/Feld.png");
@@ -24,6 +28,7 @@ function preload() {
   fridgeOpen = loadImage("./assets/Kühlschrank_offen.png");
   productJSON = loadJSON("./products.json");
   dose = loadImage("./food/Pestizid_Dose.png");
+  hiveImg = loadImage("./assets/beehive.png");
 }
 // einmaliger Aufruf
 var setup = function() {
@@ -33,8 +38,10 @@ var setup = function() {
   biene = new Bee();
   fridge = new Fridge();
   pesticide = new Pesticide();
+  hive = new Beehive();
 
-  for (var l = 0; l < data.length; l++){
+
+  for (var l = 0; l < data.length; l++) {
     fridge.add(new Product(data[l].name, data[l].path, data[l].tolerance, data[l].x, data[l].y));
   }
 
@@ -52,10 +59,27 @@ var setup = function() {
   slider2.id("slider2");
   val2 = slider2.value();
 
+  can = createSprite(width - 300, height - 300);
+  can.addImage(dose);
+  can.mouseActive = true;
+
+  hiveEl = createSprite(120, 120);
+  hiveEl.addImage(hiveImg);
+  hiveEl.mouseActive = true;
+
+
 
   // Einmaliges Aufrufen um die Slider und werte zu initialisieren
   beeControl();
 };
+
+function mousePressed() {
+  mouse = true;
+}
+
+function mouseReleased(){
+  mouse = false;
+}
 
 // prüft ob die slider werte größer oder kleiner sind und passt das beeArray an diesen Wert an
 function beeControl() {
@@ -111,6 +135,31 @@ function pestControl() {
   }
 }
 
+function canControl() {
+  if (can.mouseIsOver && mouseIsPressed) {
+    can.position.x = mouseX;
+    can.position.y = mouseY;
+
+    pestArray.push(new Pesticide(mouseX, mouseY));
+  }
+
+  if (hiveEl.mouseIsOver && mouseIsPressed) {
+    hiveEl.position.x = mouseX;
+    hiveEl.position.y = mouseY;
+
+  } else if (!mouse && hiveEl.position.x > 0 && hiveEl.position.x < width / 2 && hiveEl.position.y > 500 && !done) {
+
+    for(var b = 0; b < hive.bees; b++){
+      beeArray.push(new Bee());
+    }
+    done = true;
+
+  }
+
+}
+
+
+
 function draw() {
   background(255);
   image(bg, 0, 0, width);
@@ -119,11 +168,10 @@ function draw() {
   val2 = slider2.value();
 
   // wenn die Slider geändert werden sollen die Control Funktionen als Callback ausgeführt werden.
-  pestControl();
-  beeControl();
+  // pestControl();
+  // beeControl();
+  canControl();
   fridge.draw();
-
-  pesticide.bottle();
 
   // male soviel Pestizide/Biene wie Elemente in den Arrays vorhanden sind.
   for (var bee of beeArray) {
@@ -141,6 +189,8 @@ function draw() {
       prod.hide();
     }
   }
+
+  hive.button();
 
   drawSprites();
 

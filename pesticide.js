@@ -1,20 +1,13 @@
 /*jshint esversion: 6 */
 
 class Pesticide {
-  constructor() {
+  constructor(x, y) {
     this.number = 0;
-    this.tolerance = 100;
-    this.beeArray = [];
 
-    this.x = random(100, width - 100);
-    this.y = random(100, 300);
+    this.x = x;
+    this.y = y;
 
     this.range = 850;
-    this.img = loadImage("./food/Pestizid_Dose.png");
-
-    this.can = createSprite(width / 2, height / 2);
-    this.can.addImage(this.img);
-    this.can.mouseActive = true;
   }
 
   count() {
@@ -32,17 +25,13 @@ class Pesticide {
   draw() {
     noStroke();
     fill('rgba(139, 195, 74, 0.4)');
-    ellipse(this.x, this.y, 60, 60);
-    fill(0);
+    ellipse(this.x, this.y-70, 60, 60);
     this.move();
-  }
 
-  bottle() {
-    if (this.can.mouseIsOver && mouseIsPressed) {
-      console.log("yes");
-      this.can.position.x = mouseX;
-      this.can.position.y = mouseY;
-    }
+    setTimeout(this.dissolve, 7000);
+  }
+  dissolve(){
+    pestArray.shift();
   }
 
 }
