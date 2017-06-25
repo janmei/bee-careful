@@ -35,4 +35,14 @@ class Pesticide {
     console.log("runs");
   }
 
+  button() {
+    fill('#E3FDFF');
+    stroke('rgba(10, 48, 85, 0.5)');
+    strokeWeight(8);
+    tint(255, 128);
+    rect(width-300, 100, 220, 180, 10);
+    image(dose, width-250, 115);
+    noTint();
+  }
+
 }
