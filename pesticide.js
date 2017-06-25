@@ -32,6 +32,7 @@ class Pesticide {
   }
   dissolve(){
     pestArray.shift();
+    console.log("runs");
   }
 
 }

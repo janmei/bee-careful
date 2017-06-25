@@ -4,7 +4,7 @@ class Bee {
   constructor() {
     this.beeArray = [];
 
-    this.x = random(200, width-200);
+    this.x = random(300, width-200);
     this.y = random(100, 300);
     this.id = Math.round(random(0, 1));
   }
