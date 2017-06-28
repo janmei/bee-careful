@@ -1,6 +1,6 @@
 /*jshint esversion:6 */
 
-class Beehive {
+var Beehive = function (){
   constructor() {
     this.bees = 5;
 

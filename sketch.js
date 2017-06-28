@@ -1,30 +1,32 @@
 /*jshint esversion: 6 */
-var biene;
-var fridge;
-var pesticide;
-var beeAlive;
-var fridgeOpen;
-var tolerance;
-var beeArray = [];
-var pestArray = [];
-var hives = [];
-var flowers = [];
-var bg;
-var product;
-var productJSON;
-var can;
-var data;
-var dose;
-var hiveImg;
-var hive;
-var done = false;
-var mouse = false;
-var hiveEl;
-var flowerEl;
-var flowerEls;
-var hiveEls;
-var myHive;
-var myFlower;
+var biene,
+  fridge,
+  pesticide,
+  beeAlive,
+  fridgeOpen,
+  tolerance,
+  beeArray = [],
+  pestArray = [],
+  hives = [],
+  flowers = [],
+  bg,
+  product,
+  productJSON,
+  can,
+  data,
+  dose,
+  hiveImg,
+  hive,
+  done = false,
+  mouse = false,
+  hiveEl,
+  flowerEl,
+  flowerEls,
+  hiveEls,
+  myHive,
+  myFlower,
+  objectIsHit = false,
+  target = false;
 
 function preload() {
   bg = loadImage("./assets/Feld.png");
@@ -43,37 +45,45 @@ var setup = function() {
   createCanvas(windowWidth, windowHeight);
   data = productJSON.product;
   // Objekte erstellen
+
+  flowerEls = new Group();
+  hiveEls = new Group();
+
   biene = new Bee();
   fridge = new Fridge();
   pesticide = new Pesticide();
   hive = new Beehive();
   flower = new Flower();
 
-  flowerEls = new Group();
-  hiveEls = new Group();
 
   for (var l = 0; l < data.length; l++) {
     fridge.add(new Product(data[l].name, data[l].path, data[l].tolerance, data[l].x, data[l].y));
   }
 
-  can = createSprite(width - 300, height - 300);
+  can = createSprite(width - 203, 189);
   can.addImage(dose);
   can.mouseActive = true;
-  //
+
   // hiveEl = createSprite(120, 120);
   // hiveEl.addImage(hiveImg);
   // hiveEl.mouseActive = true;
-
-  hives = new Group();
 
 };
 
 function mousePressed() {
   mouse = true;
+
+  for (var i = 0; i < hiveEls.length; i++) {
+    myHive = hiveEls[i];
+    if (myHive.mouseIsOver && mouseIsPressed) {
+      target = hiveEl;
+    }
+  }
 }
 
 function mouseReleased() {
   mouse = false;
+  target = false;
 }
 
 function canControl() {
@@ -87,28 +97,22 @@ function canControl() {
 }
 
 function hiveControl() {
-  hiveEls.add(hiveEl);
+  // hiveEls.add(hiveEl);
+//100, 100, 220, 180, 10
+  if (mouseX > 100 && mouseX < 100 + 220 && mouseY > 100 && mouseY < 100 + 180 && mouseIsPressed){
+    hives.push(new Beehive());
+  }
   if (!mouse && hiveEl.position.x > 0 && hiveEl.position.x < width / 2 && hiveEl.position.y > 600 && !done) {
 
     for (var b = 0; b < hive.bees; b++) {
       beeArray.push(new Bee());
     }
     done = true;
-    hives.push(new Beehive());
   }
 
-  for (var i = 0; i < hiveEls.length; i++) {
-    myHive = hiveEls[i];
-    if (myHive.mouseIsOver && mouseIsPressed) {
-
-      if (myHive.overlap(myFlower)) {
-        myHive.position.x = myHive.position.x;
-        myHive.position.y = myHive.position.y;
-      } else {
-        myHive.position.x = mouseX;
-        myHive.position.y = mouseY;
-      }
-    }
+  if (mouseIsPressed && target) {
+    target.position.x = mouseX;
+    target.position.y = mouseY;
   }
 
   if (hives.length >= 3) {
@@ -125,20 +129,15 @@ function flowerControl() {
       beeArray.push(new Bee());
     }
     flowers.push(new Flower());
-    flowerEls.add(flowerEl);
+
+
   }
 
   for (var i = 0; i < flowerEls.length; i++) {
     myFlower = flowerEls[i];
-    if (myFlower.mouseIsOver && mouseIsPressed) {
-      if (myFlower.overlap(myHive)) {
-        myFlower.position.x = myFlower.position.x;
-        myFlower.position.y = myFlower.position.y;
-      } else {
-        myFlower.position.x = mouseX;
-        myFlower.position.y = mouseY;
-      }
-
+    if (myFlower.mouseIsOver && myFlower.mouseIsPressed) {
+      myFlower.position.x = mouseX;
+      myFlower.position.y = mouseY;
     }
   }
 
@@ -181,9 +180,11 @@ function draw() {
   flower.button();
   pesticide.button();
 
-  
+
   hiveEl.debug = mouseIsPressed;
   flowerEl.debug = mouseIsPressed;
+  hiveEls.debug = mouseIsPressed;
+  flowerEls.debug = mouseIsPressed;
   drawSprites();
 
 }

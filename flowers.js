@@ -8,6 +8,8 @@ class Flower {
     flowerEl.addImage(flower1);
     flowerEl.mouseActive = true;
 
+    flowerEls.add(flowerEl);
+
     done = false;
   }
   button() {
