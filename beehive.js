@@ -1,23 +1,23 @@
 /*jshint esversion:6 */
 
-var Beehive = function (){
+class Beehive extends draggableObject{
   constructor() {
+    super (60, 80, hiveImg.width, hiveImg.height);
+    this.name = "hive";
     this.bees = 5;
-
-    hiveEl = createSprite(207, 189);
-    hiveEl.addImage(hiveImg);
-    hiveEl.mouseActive = true;
-
-    done = false;
   }
   button() {
     fill('#E3FDFF');
     stroke('rgba(10, 48, 85, 0.5)');
     strokeWeight(8);
     tint(255, 128);
-    rect(100, 100, 220, 180, 10);
-    image(hiveImg, 120, 120, hiveImg.width, hiveImg.height);
+    rect(150, 150, 140, 100, 10);
+    image(hiveImg, 60, 80, hiveImg.width, hiveImg.height);
     noTint();
+  }
+
+  render(){
+    hiveEl = image(hiveImg, this.x, this.y);
   }
 
 }

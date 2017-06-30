@@ -1,17 +1,13 @@
 /*jshint esversion: 6 */
 
-class Pesticide {
+class Pesticide extends draggableObject {
   constructor(x, y) {
-    this.number = 0;
+    super(width - 210, 73, dose.width, dose.height);
 
-    this.x = x;
-    this.y = y;
+    this.name = "can";
 
-    this.range = 850;
-  }
-
-  count() {
-    this.number += 1;
+    // this.x = x;
+    // this.y = y;
   }
 
   move() {
@@ -25,12 +21,12 @@ class Pesticide {
   draw() {
     noStroke();
     fill('rgba(139, 195, 74, 0.4)');
-    ellipse(this.x, this.y-70, 60, 60);
+    ellipse(this.x, this.y - 70, 60, 60);
     this.move();
 
     setTimeout(this.dissolve, 7000);
   }
-  dissolve(){
+  dissolve() {
     pestArray.shift();
     console.log("runs");
   }
@@ -40,9 +36,14 @@ class Pesticide {
     stroke('rgba(10, 48, 85, 0.5)');
     strokeWeight(8);
     tint(255, 128);
-    rect(width-300, 100, 220, 180, 10);
-    image(dose, width-250, 115);
+    rect(width - 150, 150, 220, 180, 10);
+    image(dose, width - 210, 73);
     noTint();
+  }
+
+  render() {
+    image(dose, this.x, this.y);
+
   }
 
 }

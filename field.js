@@ -1,11 +1,5 @@
 /*jshint esversion: 6 */
 
-class Feld {
-  constructor(parm) {
-
-  }
-}
-
 class Fridge {
   constructor() {
     this.products = [];
@@ -31,7 +25,8 @@ class Fridge {
     image(fridgeOpen, width/2-120, height/2-140, 500, 480);
     textAlign(CENTER);
     fill(0);
-    text(this.tolerance, width/2, height/2-200);
+    noStroke();
+    // text(this.tolerance, width/2, height/2-200);
 
   }
 }
