@@ -28,15 +28,12 @@ var myHive;
 var myFlower;
 var target = false;
 var lastY;
-var lastDone;
-
-var hiveCount = 0;
-
+let lastDone;
 
 function preload() {
   bg = loadImage("./assets/Feld.png");
   beeAlive = loadImage("./assets/Biene_lebend.png");
-  fridgeOpen = loadImage("./assets/Kühlschrank_offen.png");
+  fridgeOpen = loadImage("./assets/Body_Kühlschrank.png");
   productJSON = loadJSON("./products.json");
   dose = loadImage("./food/Pestizid_Dose.png");
   hiveImg = loadImage("./assets/Bienenstock.png");
@@ -62,7 +59,7 @@ var setup = function() {
     fridge.add(new Product(data[l].name, data[l].path, data[l].tolerance, data[l].x, data[l].y));
   }
 
-  for (var a = 0; a <2; a++){
+  for (var a = 0; a < 2; a++) {
     beeArray.push(new Bee());
   }
 };
@@ -74,40 +71,41 @@ function mousePressed() {
 
     if (ob.isHit(mouseX, mouseY)) {
       target = ob;
+      lastDone = target.done;
     }
   }
 }
 
 function mouseReleased() {
+  if (target.y > 600) {
+    lastDone = true;
+  } else {
+    lastDone = false;
+  }
   target = false;
   mouse = false;
-}
-
-function canControl() {
-  // if (can.mouseIsOver && mouseIsPressed) {
-  //   can.position.x = mouseX;
-  //   can.position.y = mouseY;
-  //
-  //   pestArray.push(new Pesticide(mouseX, mouseY));
-  // }
-
-  if (target.name === "can"){
-    // pestArray.push(new Pesticide(target.x, target.y));
-    // pestArray.push(new Pesticide());
-  }
 
 }
 
-function hiveControl() {
+
+function dragControl() {
   if (mouseIsPressed && target) {
     target.x = mouseX - target.w / 2;
     target.y = mouseY - target.h / 2;
     lastTarget = target.name;
     lastY = target.y;
-    lastDone = target.done;
+
+    if (target.name === "can") {
+      pestArray.push(new Particles(target.x + 30, target.y + 90));
+      if( pestArray.length % 30 === 2){
+        beeArray.shift();
+      }
+    }
   }
-  if (lastY > 600 && !target && !lastDone) {
-    if (lastTarget === "hive") {
+
+  if (lastY > 600 && !target && lastDone) {
+
+    if (lastTarget === "hive") { // Hive Controller
       hives.push(lastTarget);
       if (hives.length < 3) {
         objects.push(new Beehive());
@@ -117,8 +115,10 @@ function hiveControl() {
         beeArray.push(new Bee());
         fridge.tolerance += 10;
       }
-    } else if (lastTarget === "flower") {
+
+    } else if (lastTarget === "flower") { // Flower Controller
       flowers.push(lastTarget);
+
       if (flowers.length < 5) {
         objects.push(new Flower());
       }
@@ -128,7 +128,7 @@ function hiveControl() {
         fridge.tolerance += 10;
       }
     }
-    lastDone = true;
+    lastDone = false
   }
 }
 
@@ -140,8 +140,7 @@ function draw() {
   flower.button();
   pesticide.button();
 
-  canControl();
-  hiveControl();
+  dragControl();
   fridge.draw();
   fridge.tolControl();
 
@@ -163,9 +162,5 @@ function draw() {
   for (var o of objects) {
     o.render();
   }
-
-  // pesticide.render();
-
-  drawSprites();
 
 }

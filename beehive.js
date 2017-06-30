@@ -2,17 +2,17 @@
 
 class Beehive extends draggableObject{
   constructor() {
-    super (60, 80, hiveImg.width, hiveImg.height);
+    super (99, 69, hiveImg.width, hiveImg.height);
     this.name = "hive";
-    this.bees = 5;
+    this.bees = 3;
   }
   button() {
     fill('#E3FDFF');
     stroke('rgba(10, 48, 85, 0.5)');
     strokeWeight(8);
     tint(255, 128);
-    rect(150, 150, 140, 100, 10);
-    image(hiveImg, 60, 80, hiveImg.width, hiveImg.height);
+    rect(150, 110, 140, 100, 10);
+    image(hiveImg, 99, 69);
     noTint();
   }
 

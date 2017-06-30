@@ -14,7 +14,7 @@ class draggableObject {
   }
 
   render() {
-    rect(this.x, this.y, this.w, this.h);
+    // rect(this.x, this.y, this.w, this.h);
   }
 
   isHit(x, y) {

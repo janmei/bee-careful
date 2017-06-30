@@ -1,13 +1,36 @@
 /*jshint esversion: 6 */
 
 class Pesticide extends draggableObject {
-  constructor(x, y) {
-    super(width - 210, 73, dose.width, dose.height);
+  constructor() {
+    super(460, 70, dose.width, dose.height);
 
     this.name = "can";
+  }
 
-    // this.x = x;
-    // this.y = y;
+
+  button() {
+    fill('#E3FDFF');
+    stroke('rgba(10, 48, 85, 0.5)');
+    strokeWeight(8);
+    tint(255, 128);
+    rect(490, 110, 140, 100, 10);
+    image(dose, 460, 70);
+    noTint();
+  }
+
+  render() {
+    image(dose, this.x, this.y);
+
+  }
+
+}
+
+class Particles {
+  constructor(x, y) {
+    this.x = x;
+    this.y = y;
+
+    this.size = 0;
   }
 
   move() {
@@ -19,31 +42,14 @@ class Pesticide extends draggableObject {
   }
 
   draw() {
+    this.size += 1;
     noStroke();
-    fill('rgba(139, 195, 74, 0.4)');
-    ellipse(this.x, this.y - 70, 60, 60);
+    fill(139, 195, 74, 128-this.size);
+    ellipse(this.x, this.y - 70, 60+this.size, 60+this.size);
     this.move();
-
-    setTimeout(this.dissolve, 7000);
+    if (this.size > 128){
+      this.size = 0;
+      pestArray.shift();
+    }
   }
-  dissolve() {
-    pestArray.shift();
-    console.log("runs");
-  }
-
-  button() {
-    fill('#E3FDFF');
-    stroke('rgba(10, 48, 85, 0.5)');
-    strokeWeight(8);
-    tint(255, 128);
-    rect(width - 150, 150, 220, 180, 10);
-    image(dose, width - 210, 73);
-    noTint();
-  }
-
-  render() {
-    image(dose, this.x, this.y);
-
-  }
-
 }
