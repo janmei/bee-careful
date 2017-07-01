@@ -8,31 +8,31 @@
   }, {
     "name": "Aubergine",
     "path": "./food/auberginen.png",
-    "tolerance": 50,
+    "tolerance": 40,
     "x": 240,
     "y": 215
   }, {
     "name": "Avocado",
     "path": "./food/Avocado.png",
-    "tolerance": 50,
+    "tolerance": 40,
     "x": 270,
     "y": 80
   }, {
     "name": "Butter",
     "path": "./food/butter.png",
-    "tolerance": 50,
+    "tolerance": 0,
     "x": -90,
     "y": 65
   }, {
     "name": "Cheese",
     "path": "./food/cheese.png",
-    "tolerance": 50,
+    "tolerance": 0,
     "x": 50,
     "y": 65
   }, {
     "name": "Ice",
     "path": "./food/eis.png",
-    "tolerance": 50,
+    "tolerance": 70,
     "x": 50,
     "y": 160
   }, {
@@ -44,79 +44,79 @@
   }, {
     "name": "Grapes",
     "path": "./food/grapes.png",
-    "tolerance": 50,
+    "tolerance": 60,
     "x": -35,
     "y": 60
   }, {
     "name": "Meat",
     "path": "./food/Fleisch_Box.png",
-    "tolerance": 50,
+    "tolerance": 0,
     "x": 30,
     "y": 217
   }, {
     "name": "Honey",
     "path": "./food/honey.png",
-    "tolerance": 50,
+    "tolerance": 40,
     "x": -80,
     "y": 100
   }, {
     "name": "Kakao",
     "path": "./food/kakao.png",
-    "tolerance": 50,
+    "tolerance": 60,
     "x": -55,
     "y": 160
   }, {
     "name": "Karotten",
     "path": "./food/Karotten_Box.png",
-    "tolerance": 50,
+    "tolerance": 0,
     "x": 170,
     "y": 135
   }, {
     "name": "Kiwi",
     "path": "./food/kiwi.png",
-    "tolerance": 50,
+    "tolerance": 40,
     "x": 20,
     "y": 70
   }, {
     "name": "Milk",
     "path": "./food/milk.png",
-    "tolerance": 50,
+    "tolerance": 0,
     "x": -85,
     "y": 150
   }, {
     "name": "Mushrooms",
     "path": "./food/mush_box.png",
-    "tolerance": 50,
+    "tolerance": 0,
     "x": -20,
     "y": 160
   }, {
     "name": "salad",
     "path": "./food/salad.png",
-    "tolerance": 50,
+    "tolerance": 0,
     "x": -25,
     "y": 223
   }, {
     "name": "Tomatoes",
     "path": "./food/tomato-box.png",
-    "tolerance": 50,
+    "tolerance": 30,
     "x": -34,
     "y": 106
   }, {
     "name": "Lemon",
     "path": "./food/Zitrone.png",
-    "tolerance": 50,
+    "tolerance": 20,
     "x": 310,
     "y": 83
   }, {
     "name": "Onion",
     "path": "./food/Zwiebeln.png",
-    "tolerance": 50,
+    "tolerance": 0,
     "x": 265,
     "y": 149
   }, {
     "name": "Eggs",
     "path": "./food/Eier.png",
-    "tolerance": 50,
+    "tolerance": 0,
     "x": 170,
     "y": 85
   }, {
@@ -128,7 +128,7 @@
   }, {
     "name": "Banane",
     "path": "./food/Banane.png",
-    "tolerance": 50,
+    "tolerance": 90,
     "x": 40,
     "y": 115
   }]

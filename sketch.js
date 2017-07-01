@@ -9,6 +9,9 @@ var beeArray = [];
 var pestArray = [];
 var hives = [];
 var flowers = [];
+var flowerCounter = 1;
+var flowerPool = [];
+var flowerRound;
 var objects = [];
 var bg;
 var product;
@@ -47,7 +50,8 @@ var setup = function() {
   createCanvas(windowWidth, windowHeight);
   rectMode(CENTER);
   data = productJSON.product;
-
+  flowerPool = [flower1, flower2, flower3, flower4];
+  flowerRound = flowerPool[flowerCounter];
   // Objekte erstellen
   biene = new Bee();
   fridge = new Fridge();
@@ -74,13 +78,15 @@ function mousePressed() {
       lastDone = target.done;
     }
   }
+
+
 }
 
 function mouseReleased() {
   if (target.y > 600) {
-    lastDone = true;
+    target.done = true;
   } else {
-    lastDone = false;
+    target.done = false;
   }
   target = false;
   mouse = false;
@@ -97,13 +103,13 @@ function dragControl() {
 
     if (target.name === "can") {
       pestArray.push(new Particles(target.x + 30, target.y + 90));
-      if( pestArray.length % 30 === 2){
+      if (pestArray.length % 30 === 2) {
         beeArray.shift();
       }
     }
   }
 
-  if (lastY > 600 && !target && lastDone) {
+  if (lastY > 600 && !target && !lastDone) {
 
     if (lastTarget === "hive") { // Hive Controller
       hives.push(lastTarget);
@@ -119,16 +125,21 @@ function dragControl() {
     } else if (lastTarget === "flower") { // Flower Controller
       flowers.push(lastTarget);
 
-      if (flowers.length < 5) {
+      if (flowers.length < 7) {
         objects.push(new Flower());
       }
 
       for (var c = 0; c < flower.bees; c++) {
         beeArray.push(new Bee());
-        fridge.tolerance += 10;
+        fridge.tolerance += 5;
+      }
+      flowerRound = flowerPool[flowerCounter];
+      flowerCounter++;
+      if (flowerCounter === flowerPool.length){
+        flowerCounter = 0;
       }
     }
-    lastDone = false
+    lastDone = true;
   }
 }
 
@@ -137,7 +148,7 @@ function draw() {
   image(bg, 0, 0, width);
 
   hive.button();
-  flower.button();
+  flower.button(flowerRound);
   pesticide.button();
 
   dragControl();
@@ -145,12 +156,6 @@ function draw() {
   fridge.tolControl();
 
   // male soviel Pestizide/Biene wie Elemente in den Arrays vorhanden sind.
-  for (var bee of beeArray) {
-    bee.draw();
-  }
-  for (var pest of pestArray) {
-    pest.draw();
-  }
 
   for (var prod of fridge.products) {
     if (prod.on) {
@@ -161,6 +166,12 @@ function draw() {
   }
   for (var o of objects) {
     o.render();
+  }
+  for (var bee of beeArray) {
+    bee.draw();
+  }
+  for (var pest of pestArray) {
+    pest.draw();
   }
 
 }

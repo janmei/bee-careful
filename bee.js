@@ -19,10 +19,14 @@ class Bee {
   }
 
   draw() {
-    push();
-    scale(1.0, 1.0);
-    image(beeAlive, this.x, this.y, this.size, this.size);
-    pop();
+    if (this.id === 1) {
+      push();
+      scale(-1.0, 1.0);
+      image(beeAlive, -this.x, this.y, this.size, this.size);
+      pop();
+    } else {
+      image(beeAlive, this.x, this.y, this.size, this.size);
+    }
     this.move();
   }
 }
