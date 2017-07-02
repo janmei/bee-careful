@@ -5,6 +5,7 @@ class Beehive extends draggableObject{
     super (99, 69, hiveImg.width, hiveImg.height);
     this.name = "hive";
     this.bees = 3;
+    hives.push("hive");
   }
   button() {
     fill('#E3FDFF');
