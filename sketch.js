@@ -1,15 +1,11 @@
 /*jshint esversion: 6 */
 var biene;
-var fridge;
-var pesticide;
-var beeAlive;
-var fridgeOpen;
 var tolerance;
 var beeArray = [];
 var pestArray = [];
 var hives = [];
 var flowers = [];
-var flowerCounter = 1;
+var flowerCounter = 0;
 var flowerPool = [];
 var flowerRound;
 var objects = [];
@@ -32,6 +28,8 @@ var myFlower;
 var target = false;
 var lastY;
 let lastDone;
+var pestCounter = 0;
+var playSound = false;
 
 function preload() {
   bg = loadImage("./assets/Feld.png");
@@ -44,13 +42,17 @@ function preload() {
   flower2 = loadImage("./flowers/Blume2.png");
   flower3 = loadImage("./flowers/Blume3.png");
   flower4 = loadImage("./flowers/Blume4.png");
+  drop = loadSound("./sounds/drop.caf");
+  spray = loadSound("./sounds/spray.mp3");
+  dig = loadSound("./sounds/digging1.mp3");
+  buzz = loadSound("./sounds/bee.mp3");
 }
 // einmaliger Aufruf
 var setup = function() {
   createCanvas(windowWidth, windowHeight);
   rectMode(CENTER);
   data = productJSON.product;
-  flowerPool = [flower1, flower2, flower3, flower4];
+  flowerPool = [flower2, flower1, flower3, flower4];
   flowerRound = flowerPool[flowerCounter];
   // Objekte erstellen
   biene = new Bee();
@@ -63,12 +65,15 @@ var setup = function() {
     fridge.add(new Product(data[l].name, data[l].path, data[l].tolerance, data[l].x, data[l].y));
   }
 
-  for (var a = 0; a < 2; a++) {
+  for (var a = 0; a < 3; a++) {
     beeArray.push(new Bee());
   }
+
+
 };
 
 function mousePressed() {
+
   mouse = true;
   for (var i in objects) {
     var ob = objects[i];
@@ -78,7 +83,10 @@ function mousePressed() {
       lastDone = target.done;
     }
   }
-
+  if (target.name === "can") {
+    spray.setVolume(0.3);
+    spray.play();
+  }
 
 }
 
@@ -88,11 +96,12 @@ function mouseReleased() {
   } else {
     target.done = false;
   }
+  if (target.name === "can") {
+    spray.stop();
+  }
   target = false;
   mouse = false;
-
 }
-
 
 function dragControl() {
   if (mouseIsPressed && target) {
@@ -103,30 +112,45 @@ function dragControl() {
 
     if (target.name === "can") {
       pestArray.push(new Particles(target.x + 30, target.y + 90));
-      if (pestArray.length % 30 === 2) {
+      pestCounter++;
+      playSound = true;
+      if (pestCounter % 15 === 2) {
         beeArray.shift();
+        fridge.tolerance -= 5;
+        console.log(beeArray.length % 2);
+        if (beeArray.length % 2 === 0 && beeArray.length >= 0) {
+          console.log("run");
+          hives.shift();
+          flowers.shift();
+          objects.pop();
+        }
       }
     }
   }
 
-  if (lastY > 600 && !target && !lastDone) {
+  if (!target && lastTarget === "can") {
+    playSound = false;
+  }
 
+  if (lastY > 600 && !target && !lastDone) {
     if (lastTarget === "hive") { // Hive Controller
       hives.push(lastTarget);
-      if (hives.length < 3) {
-        objects.push(new Beehive());
+      drop.play();
+      if (hives.length <= 3){
+        new Beehive();
       }
 
       for (var b = 0; b < hive.bees; b++) {
         beeArray.push(new Bee());
-        fridge.tolerance += 10;
+        fridge.tolerance += 5;
       }
 
     } else if (lastTarget === "flower") { // Flower Controller
       flowers.push(lastTarget);
-
+      dig.setVolume(0.2);
+      dig.play();
       if (flowers.length < 7) {
-        objects.push(new Flower());
+        new Flower();
       }
 
       for (var c = 0; c < flower.bees; c++) {
@@ -135,13 +159,15 @@ function dragControl() {
       }
       flowerRound = flowerPool[flowerCounter];
       flowerCounter++;
-      if (flowerCounter === flowerPool.length){
+      if (flowerCounter === flowerPool.length) {
         flowerCounter = 0;
       }
     }
     lastDone = true;
   }
 }
+
+
 
 function draw() {
   background(255);
@@ -156,7 +182,6 @@ function draw() {
   fridge.tolControl();
 
   // male soviel Pestizide/Biene wie Elemente in den Arrays vorhanden sind.
-
   for (var prod of fridge.products) {
     if (prod.on) {
       prod.show();
@@ -173,5 +198,4 @@ function draw() {
   for (var pest of pestArray) {
     pest.draw();
   }
-
 }

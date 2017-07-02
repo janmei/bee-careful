@@ -17,7 +17,7 @@ class Beehive extends draggableObject{
   }
 
   render(){
-    hiveEl = image(hiveImg, this.x, this.y);
+    image(hiveImg, this.x, this.y);
   }
 
 }
