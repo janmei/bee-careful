@@ -12,7 +12,7 @@ var objects = [];
 var bg;
 var product;
 var productJSON;
-var can;
+var can = [];
 var data;
 var dose;
 var hiveImg;
@@ -76,15 +76,17 @@ var setup = function() {
 };
 
 function mousePressed() {
-
   mouse = true;
   for (var i in objects) {
     var ob = objects[i];
-
     if (ob.isHit(mouseX, mouseY)) {
       target = ob;
       lastDone = target.done;
     }
+  }
+  var canOb = can[0];
+  if (canOb.isHit(mouseX, mouseY)) {
+    target = canOb;
   }
   if (target.name === "can") {
     spray.setVolume(0.3);
@@ -107,9 +109,13 @@ function mouseReleased() {
 }
 
 function filterArray() {
-  deletable = objects.filter(function (el) {
+  deletable = objects.filter(function(el) {
     return el.done === true;
   });
+}
+
+function include(arr, obj) {
+  return (arr.indexOf(obj) != -1);
 }
 
 function dragControl() {
@@ -123,15 +129,25 @@ function dragControl() {
       pestArray.push(new Particles(target.x + 30, target.y + 90));
       pestCounter++;
       playSound = true;
-      if (pestCounter % 15 === 2 && beeArray.length >= 3) {
+      if (pestCounter % 15 === 2 && beeArray.length >= 4) {
         beeArray.shift();
         fridge.tolerance -= 5;
-        console.log(beeArray.length % 2);
+        // console.log(beeArray.length % 2);
         if (beeArray.length % 3 === 2) {
-          console.log("run");
+          // console.log("run");
           hives.shift();
           flowers.shift();
-          deletable.shift();
+
+          var deletable = objects.find(function(item, index, object) {
+            if (item.done) {
+              object.splice(index, 1);
+              console.log(index);
+              return true;
+            }else {
+              return false;
+            }
+          });
+          // console.log(deletable);
         }
       }
     }
@@ -200,6 +216,7 @@ function draw() {
   for (var o of objects) {
     o.render();
   }
+  can[0].render();
   for (var bee of beeArray) {
     bee.draw();
   }

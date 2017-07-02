@@ -10,7 +10,6 @@ class draggableObject {
     this.w = w || 0;
     this.h = h || 0;
     this.done = false;
-    objects.push(this);
   }
 
   render() {

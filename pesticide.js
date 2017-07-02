@@ -3,8 +3,9 @@
 class Pesticide extends draggableObject {
   constructor() {
     super(460, 70, dose.width, dose.height);
-
     this.name = "can";
+
+    can.push(this);
   }
 
 

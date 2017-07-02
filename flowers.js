@@ -7,6 +7,7 @@ class Flower extends draggableObject{
     this.bees = 3;
     this.flowerCircle = flowerPool[flowerCounter];
     flowers.push("flower");
+    objects.push(this);
   }
   button(flower) {
     fill('#E3FDFF');
