@@ -5,7 +5,7 @@ var beeArray = [];
 var pestArray = [];
 var hives = [];
 var flowers = [];
-var flowerCounter = 0;
+var flowerCounter = -1;
 var flowerPool = [];
 var flowerRound;
 var objects = [];
@@ -29,8 +29,10 @@ var target = false;
 var lastY;
 let lastDone;
 var pestCounter = 0;
-var playSound = false;
 var deletable;
+var newflower = false;
+var newhive = false;
+var vol = 0.1;
 
 function preload() {
   bg = loadImage("./assets/Feld.png");
@@ -43,10 +45,11 @@ function preload() {
   flower2 = loadImage("./flowers/Blume2.png");
   flower3 = loadImage("./flowers/Blume3.png");
   flower4 = loadImage("./flowers/Blume4.png");
-  drop = loadSound("./sounds/drop.caf");
+  drop = loadSound("./sounds/drop.mp3");
   spray = loadSound("./sounds/spray.mp3");
   dig = loadSound("./sounds/digging1.mp3");
-  buzz = loadSound("./sounds/bee.mp3");
+  singleBuzz = loadSound("./sounds/bee.mp3");
+  buzz = loadSound("./sounds/bees.wav");
 }
 // einmaliger Aufruf
 var setup = function() {
@@ -54,13 +57,13 @@ var setup = function() {
   rectMode(CENTER);
   data = productJSON.product;
   flowerPool = [flower2, flower1, flower3, flower4];
-  flowerRound = flowerPool[flowerCounter];
   // Objekte erstellen
-  biene = new Bee();
+  // biene = new Bee();
   fridge = new Fridge();
   pesticide = new Pesticide();
   hive = new Beehive();
   flower = new Flower();
+  flowerRound = flowerPool[flowerCounter];
 
   for (var l = 0; l < data.length; l++) {
     fridge.add(new Product(data[l].name, data[l].path, data[l].tolerance, data[l].x, data[l].y));
@@ -69,10 +72,12 @@ var setup = function() {
   for (var a = 0; a < 3; a++) {
     beeArray.push(new Bee());
     fridge.tolerance += 5;
-
   }
 
-
+  console.log("sound");
+  singleBuzz.setVolume(0.1);
+  singleBuzz.play(random(0, 5));
+  singleBuzz.loop();
 };
 
 function mousePressed() {
@@ -104,63 +109,81 @@ function mouseReleased() {
   if (target.name === "can") {
     spray.stop();
   }
+  lastTarget = target.name;
+  lastY = target.y;
   target = false;
   mouse = false;
 }
 
-function filterArray() {
-  deletable = objects.filter(function(el) {
-    return el.done === true;
-  });
+function buzzOn() {
+  if (buzz.isPlaying()) {
+    buzz.setVolume(vol);
+  } else {
+    singleBuzz.stop();
+    buzz.setVolume(vol);
+    buzz.loop();
+
+  }
 }
 
-function include(arr, obj) {
-  return (arr.indexOf(obj) != -1);
+function buzzOff() {
+  if (buzz.isPlaying()) {
+    singleBuzz.play();
+    buzz.stop();
+  }
 }
 
 function dragControl() {
   if (mouseIsPressed && target) {
     target.x = mouseX - target.w / 2;
     target.y = mouseY - target.h / 2;
-    lastTarget = target.name;
-    lastY = target.y;
-
     if (target.name === "can") {
       pestArray.push(new Particles(target.x + 30, target.y + 90));
       pestCounter++;
-      playSound = true;
+      if (flowers.length === 7 && !newflower) {
+        new Flower();
+        newflower = true;
+        flowerRound = flowerPool[flowerCounter];
+      }
+
+      if (hives.length === 3 && !newhive) {
+        new Beehive();
+        newhive = true;
+      }
+
       if (pestCounter % 15 === 2 && beeArray.length >= 4) {
+
         beeArray.shift();
         fridge.tolerance -= 5;
-        // console.log(beeArray.length % 2);
+
         if (beeArray.length % 3 === 2) {
-          // console.log("run");
           hives.shift();
           flowers.shift();
 
           var deletable = objects.find(function(item, index, object) {
             if (item.done) {
               object.splice(index, 1);
-              console.log(index);
+              buzz.setVolume(vol -= 0.1);
               return true;
-            }else {
+            } else {
               return false;
             }
           });
-          // console.log(deletable);
         }
+      }
+      if (beeArray.length > 3) {
+        buzzOn();
+      } else {
+        buzzOff();
       }
     }
   }
-
-  if (!target && lastTarget === "can") {
-    playSound = false;
-  }
-
   if (lastY > 600 && !target && !lastDone) {
-    filterArray();
-    if (lastTarget === "hive") { // Hive Controller
+
+    if (lastTarget === "hive") {
+      newhive = false; // Hive Controller
       drop.play();
+      vol += 0.1;
       if (hives.length <= 3) {
         new Beehive();
       }
@@ -170,30 +193,37 @@ function dragControl() {
         fridge.tolerance += 5;
       }
 
-    } else if (lastTarget === "flower") { // Flower Controller
+    } else if (lastTarget === "flower") {
+      newflower = false; // Flower Controller
       dig.setVolume(0.2);
       dig.play();
+      vol += 0.1;
       if (flowers.length < 7) {
         new Flower();
       }
-
       for (var c = 0; c < flower.bees; c++) {
         beeArray.push(new Bee());
         fridge.tolerance += 5;
       }
       flowerRound = flowerPool[flowerCounter];
-      flowerCounter++;
-      if (flowerCounter === flowerPool.length) {
+
+      if (flowerCounter === flowerPool.length - 1) {
         flowerCounter = 0;
       }
     }
     lastDone = true;
+    if (beeArray.length > 3) {
+      buzzOn();
+    } else {
+      buzzOff();
+    }
   }
 }
 
 
 
 function draw() {
+
   background(255);
   image(bg, 0, 0, width);
 
@@ -223,4 +253,6 @@ function draw() {
   for (var pest of pestArray) {
     pest.draw();
   }
+
+
 }

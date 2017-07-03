@@ -6,6 +6,7 @@ class Bee {
     this.y = random(100, 300);
     this.id = Math.round(random(0, 1));
     this.size = random(20, 50);
+    
   }
 
   move() {
@@ -22,9 +23,14 @@ class Bee {
       scale(-1.0, 1.0);
       image(beeAlive, -this.x, this.y, this.size, this.size);
       pop();
+
     } else {
       image(beeAlive, this.x, this.y, this.size, this.size);
     }
     this.move();
+  }
+  stopSound() {
+    console.log("stop");
+    buzz.stop();
   }
 }

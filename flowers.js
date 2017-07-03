@@ -5,6 +5,7 @@ class Flower extends draggableObject{
     super(300, 65, flower1.width, flower1.height);
     this.name = "flower";
     this.bees = 3;
+    flowerCounter++;
     this.flowerCircle = flowerPool[flowerCounter];
     flowers.push("flower");
     objects.push(this);
