@@ -5,8 +5,8 @@ var objects = [];
 var lastTarget;
 class draggableObject {
   constructor(x, y, w, h) {
-    this.startX = x;
-    this.startY = y;
+    this.drag = createVector(x, y);
+    this.start = createVector(x, y);
     this.x = x || 0;
     this.y = y || 0;
     this.w = w || 0;

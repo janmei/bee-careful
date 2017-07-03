@@ -28,6 +28,7 @@ var myFlower;
 var target = false;
 var lastY;
 let lastDone;
+var last;
 var pestCounter = 0;
 var deletable;
 var newflower = false;
@@ -76,7 +77,6 @@ var setup = function() {
 
   console.log("sound");
   singleBuzz.setVolume(0.1);
-  singleBuzz.play(random(0, 5));
   singleBuzz.loop();
 };
 
@@ -87,6 +87,10 @@ function mousePressed() {
     if (ob.isHit(mouseX, mouseY)) {
       target = ob;
       lastDone = target.done;
+      last = target;
+      target.drag.x = mouseX;
+      target.drag.y = mouseY;
+      console.log(target.drag.x);
     }
   }
   var canOb = can[0];
@@ -177,7 +181,9 @@ function dragControl() {
         buzzOff();
       }
     }
+
   }
+
   if (lastY > 600 && !target && !lastDone) {
 
     if (lastTarget === "hive") {
