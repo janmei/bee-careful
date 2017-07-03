@@ -2,12 +2,13 @@
 
 class Beehive extends draggableObject{
   constructor() {
-    super (99, 69, hiveImg.width, hiveImg.height);
+    super (99, 69, hiveImg.width, hiveImg.height); // gets Parameters from draggableObject
     this.name = "hive";
     this.bees = 3;
     hives.push("hive");
     objects.push(this);
   }
+
   button() {
     fill('#E3FDFF');
     stroke('rgba(10, 48, 85, 0.5)');

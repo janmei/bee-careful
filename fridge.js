@@ -11,6 +11,7 @@ class Fridge {
   }
 
   tolControl(){
+    // hide product items in fridge if tolerance is smaller than current value
     var tol = this.tolerance;
     this.products.forEach(function (item, index) {
       if (tol < item.tolerance){

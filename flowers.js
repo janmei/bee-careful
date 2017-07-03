@@ -2,7 +2,7 @@
 
 class Flower extends draggableObject{
   constructor() {
-    super(300, 65, flower1.width, flower1.height);
+    super(300, 65, flower1.width, flower1.height); // gets Parameters from draggableObject
     this.name = "flower";
     this.bees = 3;
     flowerCounter++;
@@ -10,6 +10,8 @@ class Flower extends draggableObject{
     flowers.push("flower");
     objects.push(this);
   }
+
+  // button with interchangeable backgroundimage
   button(flower) {
     fill('#E3FDFF');
     stroke('rgba(10, 48, 85, 0.5)');

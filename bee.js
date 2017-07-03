@@ -6,10 +6,10 @@ class Bee {
     this.y = random(100, 300);
     this.id = Math.round(random(0, 1));
     this.size = random(20, 50);
-    
   }
 
   move() {
+    // jitter effect
     var x = random(-2, 2);
     var y = random(-2, 2);
     var easing = 0.2;
@@ -18,6 +18,7 @@ class Bee {
   }
 
   draw() {
+    // reverse image on id = 1
     if (this.id === 1) {
       push();
       scale(-1.0, 1.0);
@@ -28,9 +29,5 @@ class Bee {
       image(beeAlive, this.x, this.y, this.size, this.size);
     }
     this.move();
-  }
-  stopSound() {
-    console.log("stop");
-    buzz.stop();
   }
 }

@@ -3,10 +3,10 @@
 var objects = [];
 
 var lastTarget;
+
+// class will be inherited to all movable objects.
 class draggableObject {
   constructor(x, y, w, h) {
-    this.drag = createVector(x, y);
-    this.start = createVector(x, y);
     this.x = x || 0;
     this.y = y || 0;
     this.w = w || 0;
@@ -18,6 +18,7 @@ class draggableObject {
     // rect(this.x, this.y, this.w, this.h);
   }
 
+  // checks if mouse is in hitbox.
   isHit(x, y) {
     if (x > this.x &&
       x < this.x + this.w &&

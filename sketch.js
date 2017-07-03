@@ -1,40 +1,32 @@
 /*jshint esversion: 6 */
-var biene;
-var tolerance;
-var beeArray = [];
-var pestArray = [];
-var hives = [];
-var flowers = [];
-var flowerCounter = -1;
-var flowerPool = [];
-var flowerRound;
-var objects = [];
-var bg;
-var product;
-var productJSON;
-var can = [];
-var data;
-var dose;
-var hiveImg;
-var hive;
-var done = false;
-var mouse = false;
-var hiveEl;
-var flowerEl;
-var flowerEls;
-var hiveEls;
-var myHive;
-var myFlower;
-var target = false;
-var lastY;
-let lastDone;
-var last;
-var pestCounter = 0;
-var deletable;
-var newflower = false;
-var newhive = false;
-var vol = 0.1;
 
+// load Variables
+var tolerance,
+  beeArray = [],
+  pestArray = [],
+  hives = [],
+  flowers = [],
+  flowerCounter = -1,
+  flowerPool = [],
+  flowerRound,
+  objects = [],
+  product,
+  productJSON,
+  can = [],
+  data,
+  dose,
+  hive,
+  done = false,
+  target = false,
+  lastY,
+  lastDone,
+  pestCounter = 0,
+  deletable,
+  newflower = false,
+  newhive = false,
+  vol = 0.1;
+
+// preload sounds an essential Images and JSON
 function preload() {
   bg = loadImage("./assets/Feld.png");
   beeAlive = loadImage("./assets/Biene_lebend.png");
@@ -56,47 +48,51 @@ function preload() {
 var setup = function() {
   createCanvas(windowWidth, windowHeight);
   rectMode(CENTER);
-  data = productJSON.product;
-  flowerPool = [flower2, flower1, flower3, flower4];
+  data = productJSON.product; // calling JSON for data
+  flowerPool = [flower2, flower1, flower3, flower4]; // setting Pool of Flowers for circling through them
+
   // Objekte erstellen
   // biene = new Bee();
   fridge = new Fridge();
   pesticide = new Pesticide();
   hive = new Beehive();
   flower = new Flower();
-  flowerRound = flowerPool[flowerCounter];
 
+  flowerRound = flowerPool[flowerCounter]; // setting initial background flower for Button
+
+  // for every element in JSON create new Product and add to the fridge.
+  // gives name, path, tolerance, x and y Parameters
   for (var l = 0; l < data.length; l++) {
     fridge.add(new Product(data[l].name, data[l].path, data[l].tolerance, data[l].x, data[l].y));
   }
 
+  // set initial 3 bees
   for (var a = 0; a < 3; a++) {
     beeArray.push(new Bee());
     fridge.tolerance += 5;
   }
 
-  console.log("sound");
+  //start background buzzing
   singleBuzz.setVolume(0.1);
   singleBuzz.loop();
 };
 
 function mousePressed() {
-  mouse = true;
+  // for every object thats been pushed in to the array check if it has been hit with mouse.
   for (var i in objects) {
     var ob = objects[i];
     if (ob.isHit(mouseX, mouseY)) {
       target = ob;
       lastDone = target.done;
-      last = target;
-      target.drag.x = mouseX;
-      target.drag.y = mouseY;
-      console.log(target.drag.x);
     }
   }
+  // check if mouse hits can. Has to be seperate from other objects so it wont be deleted
   var canOb = can[0];
   if (canOb.isHit(mouseX, mouseY)) {
     target = canOb;
   }
+
+  // play spray sound if target is hit
   if (target.name === "can") {
     spray.setVolume(0.3);
     spray.play();
@@ -105,6 +101,7 @@ function mousePressed() {
 }
 
 function mouseReleased() {
+  // changes value of target object to done to do further funct calls
   if (target.y > 600) {
     target.done = true;
   } else {
@@ -113,12 +110,14 @@ function mouseReleased() {
   if (target.name === "can") {
     spray.stop();
   }
+
+  // creates variables of last target to process them after mouseReleased
   lastTarget = target.name;
   lastY = target.y;
   target = false;
-  mouse = false;
 }
 
+// soundController
 function buzzOn() {
   if (buzz.isPlaying()) {
     buzz.setVolume(vol);
@@ -126,7 +125,6 @@ function buzzOn() {
     singleBuzz.stop();
     buzz.setVolume(vol);
     buzz.loop();
-
   }
 }
 
@@ -137,33 +135,41 @@ function buzzOff() {
   }
 }
 
+// main Controller
 function dragControl() {
+  // apply mousex and mousey to targets position so it follows the mouse.
   if (mouseIsPressed && target) {
     target.x = mouseX - target.w / 2;
     target.y = mouseY - target.h / 2;
+
+    // if the target is the spraycan then create ne Particles and count them
     if (target.name === "can") {
       pestArray.push(new Particles(target.x + 30, target.y + 90));
       pestCounter++;
+      // flower is created when all flowers are on the field and the can is sprayed
       if (flowers.length === 7 && !newflower) {
         new Flower();
         newflower = true;
         flowerRound = flowerPool[flowerCounter];
       }
 
+      // hive is created whenn all hive are on the field an the can is sprayed
       if (hives.length === 3 && !newhive) {
         new Beehive();
         newhive = true;
       }
 
+      // every 15th item of the pestCounter remove one bee from the beeArray and count down the tolerance
       if (pestCounter % 15 === 2 && beeArray.length >= 4) {
-
         beeArray.shift();
         fridge.tolerance -= 5;
 
+        // every 3rd item in beeArray will remove a hive or flower
         if (beeArray.length % 3 === 2) {
           hives.shift();
           flowers.shift();
 
+          // finds the first flower or hive which has the value done = true; and remove it from the objects array
           var deletable = objects.find(function(item, index, object) {
             if (item.done) {
               object.splice(index, 1);
@@ -175,6 +181,8 @@ function dragControl() {
           });
         }
       }
+
+      // controls sound
       if (beeArray.length > 3) {
         buzzOn();
       } else {
@@ -183,17 +191,20 @@ function dragControl() {
     }
 
   }
-
+  // if the target which was clicked is y > 600
   if (lastY > 600 && !target && !lastDone) {
+    if (lastTarget === "hive") { // hive was target
+      // variables controled
+      newhive = false;
+      drop.play(); // sound played
+      vol += 0.1; // volume up 0.1
 
-    if (lastTarget === "hive") {
-      newhive = false; // Hive Controller
-      drop.play();
-      vol += 0.1;
+      // create new objects if less then 4 are already in.
       if (hives.length <= 3) {
         new Beehive();
       }
 
+      // for each hive push number of bees in beeArray
       for (var b = 0; b < hive.bees; b++) {
         beeArray.push(new Bee());
         fridge.tolerance += 5;
@@ -211,13 +222,17 @@ function dragControl() {
         beeArray.push(new Bee());
         fridge.tolerance += 5;
       }
-      flowerRound = flowerPool[flowerCounter];
 
+      // update flower Button with next flower in flowerPool
+      flowerRound = flowerPool[flowerCounter];
+      // sets flower Counter to 0
       if (flowerCounter === flowerPool.length - 1) {
         flowerCounter = 0;
       }
     }
     lastDone = true;
+
+    //sound controller
     if (beeArray.length > 3) {
       buzzOn();
     } else {
@@ -225,8 +240,6 @@ function dragControl() {
     }
   }
 }
-
-
 
 function draw() {
 
