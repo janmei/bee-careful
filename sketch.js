@@ -69,7 +69,7 @@ var setup = function() {
   // set initial 3 bees
   for (var a = 0; a < 3; a++) {
     beeArray.push(new Bee());
-    fridge.tolerance += 5;
+    fridge.tolerance += 2;
   }
 
   //start background buzzing
@@ -162,7 +162,7 @@ function dragControl() {
       // every 15th item of the pestCounter remove one bee from the beeArray and count down the tolerance
       if (pestCounter % 15 === 2 && beeArray.length >= 4) {
         beeArray.shift();
-        fridge.tolerance -= 5;
+        fridge.tolerance -= 3;
 
         // every 3rd item in beeArray will remove a hive or flower
         if (beeArray.length % 3 === 2) {
@@ -207,7 +207,7 @@ function dragControl() {
       // for each hive push number of bees in beeArray
       for (var b = 0; b < hive.bees; b++) {
         beeArray.push(new Bee());
-        fridge.tolerance += 5;
+        fridge.tolerance += 3;
       }
 
     } else if (lastTarget === "flower") {
@@ -220,7 +220,7 @@ function dragControl() {
       }
       for (var c = 0; c < flower.bees; c++) {
         beeArray.push(new Bee());
-        fridge.tolerance += 5;
+        fridge.tolerance += 3;
       }
 
       // update flower Button with next flower in flowerPool
