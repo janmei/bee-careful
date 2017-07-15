@@ -244,7 +244,7 @@ function dragControl() {
 function draw() {
 
   background(255);
-  image(bg, 0, 0, width);
+  image(bg, 0, 0, width, height);
 
   hive.button();
   flower.button(flowerRound);
