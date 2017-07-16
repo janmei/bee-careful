@@ -95,7 +95,7 @@ function mousePressed() {
   // play spray sound if target is hit
   if (target.name === "can") {
     spray.setVolume(0.3);
-    spray.play();
+    spray.loop();
   }
 
 }
