@@ -24,7 +24,6 @@ class Fridge {
 
   draw(){
     image(fridgeOpen, width/2-120, height/2-140, 500, 480);
-    textAlign(CENTER);
     fill(0);
     noStroke();
     // text(this.tolerance, width/2, height/2-200);
